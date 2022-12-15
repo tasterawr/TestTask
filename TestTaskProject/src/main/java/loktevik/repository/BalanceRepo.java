@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface BalanceRepo extends JpaRepository<Balance, Long> {
-    Optional<Long> getAmountById(Long id);
 }

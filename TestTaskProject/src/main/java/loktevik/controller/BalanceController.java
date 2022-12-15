@@ -25,9 +25,13 @@ public class BalanceController {
      */
     @GetMapping("balance/{id}")
     public String getBalance(@PathVariable Long id){
+        // обновление счетчика запросов
         requestCountTracker.updateGetBalanceCnt();
         log.info(requestCountTracker.getBalanceRequestInfo());
 
+        // непосредственное получение баланса выделено в отдельный метод,
+        // чтобы задействовать кэширование. В противном случае текущий метод скипнется
+        // и не обновится счетчик
         return getBalanceForId(id);
     }
 
@@ -40,6 +44,7 @@ public class BalanceController {
     @PutMapping("balance/{id}")
     @CachePut(value = "balances", key = "#id")
     public String changeBalance(@PathVariable Long id, @RequestParam Long amount){
+        // обновление счетчика запросов
         requestCountTracker.updateChangeBalanceCnt();
         log.info(requestCountTracker.changeBalanceRequestInfo());
 
@@ -49,8 +54,8 @@ public class BalanceController {
 
     /**
      * Возвращение текущего баланса из базы данных или из кэша.
-     * @param id
-     * @return
+     * @param id идентификатор банковского счета.
+     * @return текущая сумма на банковском счету.
      */
     @Cacheable(value = "balances", key = "#id")
     public String getBalanceForId(Long id){
