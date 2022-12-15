@@ -23,7 +23,7 @@ public class BalanceServiceRequestCountTracker {
      * Возвращение информации о числе запросов получения информации о балансе банковского счета.
      * @return строка, с информацией о числе запросов.
      */
-    public String getBalanceRequestInfo(){
+    public synchronized String getBalanceRequestInfo(){
         return String.format("Total number of get balance requests: %d " +
                 "with %d requests per second.", getBalanceCntTotal, getBalanceCntCur);
     }
@@ -32,7 +32,7 @@ public class BalanceServiceRequestCountTracker {
      * Возвращение информации о числе запросов изменения информации о балансе банковского счета.
      * @return строка, с информацией о числе запросов.
      */
-    public String changeBalanceRequestInfo(){
+    public synchronized String changeBalanceRequestInfo(){
         return String.format("Total number of change balance requests: %d " +
                 "with %d requests per second.", changeBalanceCntTotal, changeBalanceCntCur);
     }
